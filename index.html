@@ -855,7 +855,8 @@
         }
         function validate_imageNews(){
             let TBX_Image = document.getElementById("news_UploadedImage");
-            if (TBX_Image.src.includes("images/No_image.png"))
+            
+           if (TBX_Image.src.includes("images/No_image.png") && addMode)
                 return "Image manquante";
             return "";
         }
