@@ -191,6 +191,7 @@
         let queryString = "";
         var limit = 4;
         var offset = 0;
+        var totalNews = 0;
         var canGetMore = true;
         let search = "";
         let searchShowed = false;
@@ -724,6 +725,7 @@
             for(let i=0; i< userInfos.length; i++){
                 $("#search_author").append($(`<option value=${userInfos[i]["UserID"]}> ${userInfos[i]["Username"]} </option>`));
             }
+            totalNews = news.length;
             updateUI();
         }
         function updateNewsSearch() {
@@ -956,36 +958,15 @@
             return $("<a href='" + url + "' target='_blank'></a>");
         }
         
-        // document.getElementById("news-list-scroll-containter").onscroll = function(){
-        //     let currentScrollHeight = document.getElementById("news-list-scroll-containter").scrollTop;
-        //     let windowHeight = document.getElementById("news-list-scroll-containter").style.maxHeight;
-        //     //height avec JQUERRY
-        //     //scrolltop + height
-        //     // data off set = total du nombre de nouvelles
-
-        //     console.log(currentScrollHeight, windowHeight);
-        //     if(currentScrollHeight >= windowHeight / 0.75 && canGetMore){
-        //         //document.documentElement.scrollTop = windowHeight / 0.75;
-        //         //agrandir le limit dans le queryString
-        //         canGetMore = false;
-        //         limit += 1;
-        //         console.log("j entre dans l augmentation de limit");
-        //         console.log("la limite est: " + limit);
-        //         updateNewsSearch();
-        //     }
-        // }
         document.getElementById("news-list-scroll-containter").onscroll = function(){
             let currentScrollHeight = $("#news-list-scroll-containter").scrollTop();
             let containerHeight = $("#news-list-scroll-containter").height();
-            let newsListHeight = $("#newsList");
-            let totalNews = getNews();
-            let offsetMax = $("totalNews").size();
-            console.log(totalNews, offsetMax);
+            let newsListHeight = $("#newsList").height();
+
             if(currentScrollHeight + containerHeight > newsListHeight){
-                if(limit <= offsetMax){
+                if(limit < totalNews){
                     limit++;
                     updateNewsSearch();
-                    //updateUI();
                 }
             }
             
@@ -1055,7 +1036,6 @@
                 news.forEach(news => {
                     $('#newsList').append(showNews(news, loggedUserId)); 
                 });
-
                 $('.editTextNews').click(OpenEditTextDialog);
                 $('.editTitleNews').click(OpenEditTitleDialog);
                 $('.deleteNews').click(deleteNews);
